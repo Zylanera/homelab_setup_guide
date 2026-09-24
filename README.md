@@ -10,11 +10,11 @@ This documentation assumes that services are already running. A separate setup g
 | 1 | [Overview](#1-overview) | – | Which access method to use for what |
 | 2 | [Prerequisites](#2-prerequisites) | – | What you need before starting |
 | 3 | [Public access via Cloudflare Tunnel](#3-public-access-via-cloudflare-tunnel) | cloudflared, Cloudflare Zero Trust | Expose selected services to the internet without opening ports |
-| 3.1 | [Securing public services](#4-securing-public-services-with-cloudflare-access) | Cloudflare Access | Put a login in front of exposed services |
-| 4 | [Private access via VPN](#5-private-access-via-vpn-tailscale) | Tailscale | Reach your whole homelab from your own devices |
-| 4.1 | [Exit Nodes](#6-optional-tailscale-subnet-router) | Tailscale | Reach devices that can't run Tailscale themselves |
-| 5 | [Verification & Troubleshooting](#7-verification--troubleshooting) | – | Check that everything works |
-| 6 | [Security Checklist](#8-security-checklist) | – | Things to double-check before you're done |
+| 3.1 | [Securing public services](#31-securing-public-services-with-cloudflare-access) | Cloudflare Access | Put a login in front of exposed services |
+| 4 | [Private access via VPN](#4-private-access-via-tailscale-vpn) | Tailscale | Reach your whole homelab from your own devices |
+| 4.4 | [Exit Node](#44-exit-node) | Tailscale | Reach devices in your home network that can't run Tailscale themselves |
+| 5 | [Verification & Troubleshooting](#5-verification--troubleshooting) | – | Check that everything works |
+| 6 | [Security Checklist](#6-security-checklist) | – | Things to double-check before you're done |
 
 ---
 
@@ -102,9 +102,7 @@ A Cloudflare Tunnel runs a small daemon (`cloudflared`) in your network. It open
 > **Service uses HTTPS with a self-signed certificate internally?**
 > Set the service type to `HTTPS` and enable **Additional application settings → TLS → No TLS Verify**.
 
----
-
-## 4. Securing public services with Cloudflare Access
+### 3.1 Securing public services with Cloudflare Access
  
 Without further protection, every service published through the tunnel is reachable by anyone who knows the URL. Cloudflare Access adds a login page **in front of** your service, before traffic ever reaches your homelab.
  
@@ -119,11 +117,11 @@ Without further protection, every service published through the tunnel is reacha
  
 ---
 
-## 5. Private access via Tailscale VPN
+## 4. Private access via Tailscale VPN
  
 Tailscale builds a private, encrypted network (**Tailnet**) between all your devices based on WireGuard. Devices connect directly to each other where possible; no ports need to be opened.
  
-### 5.1 Install Tailscale on the homelab host
+### 4.1 Install Tailscale on the homelab host
  
 ```bash
 curl -fsSL https://tailscale.com/install.sh | sh
@@ -137,7 +135,7 @@ tailscale ip -4      # shows the Tailscale IP of this host
 tailscale status     # shows all devices in your Tailnet
 ```
 
-### 5.2 Install Tailscale on your clients
+### 4.2 Install Tailscale on your clients
  
 Install the Tailscale app on your laptop, phone, etc. ([download](https://tailscale.com/download)) and log in with the **same account**.
  
@@ -147,13 +145,11 @@ ssh user@100.x.y.z
 ```
 or open `http://100.x.y.z:8096` in the browser. Note, that you have to enable the vpn in the tailscale app manually!
  
-### 5.3 Recommended settings in the admin console
+### 4.3 Recommended settings in the admin console
  
 - **MagicDNS** (*DNS* tab): enable it to use hostnames instead of IPs, e.g. `http://homelab:8096` or `ssh user@homelab`.
 - **Disable key expiry** for servers (*Machines → ⋯ → Disable key expiry*). Otherwise the server drops out of the Tailnet after the key expires (default 180 days) and needs a new login – usually when you're not at home.
----
- 
-## 6. Exit Node
+### 4.4 Exit Node
  
 If you want to be able to connect to devices inside your home network, without having each of them run tailscale, you can just set up *advertise as exit node* on the server:
 ```bash
@@ -163,7 +159,7 @@ Approve it in the admin console and select it as exit node on your client.
  
 ---
  
-## 7. Verification & Troubleshooting
+## 5. Verification & Troubleshooting
  
 **Verify:**
 - [ ] `https://<service>.example.com` loads from mobile data (Wi-Fi turned off).
@@ -196,7 +192,7 @@ tailscale netcheck
  
 ---
  
-## 8. Security Checklist
+## 6. Security Checklist
  
 - [ ] No ports are forwarded on the router (neither tool needs it).
 - [ ] Admin interfaces (Proxmox, router, NAS, Portainer, …) are **only** reachable via Tailscale.
