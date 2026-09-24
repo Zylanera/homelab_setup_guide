@@ -1,4 +1,4 @@
-# Homelab Setup Guide
+# Homelab Setup Guide - Remote Access
 A Guide to how to setup a homelab and access it from remote. <br>
 This documentation assumes that services are already running. A separate setup guide covering this specifically will be available [here](https://github.com/Zylanera/homelab_setup_guide/) soon.
 
