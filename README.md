@@ -12,7 +12,6 @@ This documentation assumes that services are already running. A separate setup g
 | 3 | [Public access via Cloudflare Tunnel](#3-public-access-via-cloudflare-tunnel) | cloudflared, Cloudflare Zero Trust | Expose selected services to the internet without opening ports |
 | 3.1 | [Securing public services](#31-securing-public-services-with-cloudflare-access) | Cloudflare Access | Put a login in front of exposed services |
 | 4 | [Private access via VPN](#4-private-access-via-tailscale-vpn) | Tailscale | Reach your whole homelab from your own devices |
-| 4.4 | [Exit Node](#44-exit-node) | Tailscale | Reach devices in your home network that can't run Tailscale themselves |
 | 5 | [Verification & Troubleshooting](#5-verification--troubleshooting) | – | Check that everything works |
 | 6 | [Security Checklist](#6-security-checklist) | – | Things to double-check before you're done |
 
@@ -149,6 +148,7 @@ or open `http://100.x.y.z:8096` in the browser. Note, that you have to enable th
  
 - **MagicDNS** (*DNS* tab): enable it to use hostnames instead of IPs, e.g. `http://homelab:8096` or `ssh user@homelab`.
 - **Disable key expiry** for servers (*Machines → ⋯ → Disable key expiry*). Otherwise the server drops out of the Tailnet after the key expires (default 180 days) and needs a new login – usually when you're not at home.
+
 ### 4.4 Exit Node
  
 If you want to be able to connect to devices inside your home network, without having each of them run tailscale, you can just set up *advertise as exit node* on the server:
