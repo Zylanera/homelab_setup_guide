@@ -12,7 +12,7 @@ This documentation assumes that services are already running. A separate setup g
 | 3 | [Public access via Cloudflare Tunnel](#3-public-access-via-cloudflare-tunnel) | cloudflared, Cloudflare Zero Trust | Expose selected services to the internet without opening ports |
 | 3.1 | [Securing public services](#4-securing-public-services-with-cloudflare-access) | Cloudflare Access | Put a login in front of exposed services |
 | 4 | [Private access via VPN](#5-private-access-via-vpn-tailscale) | Tailscale | Reach your whole homelab from your own devices |
-| 4.1 | [Subnet Router](#6-optional-tailscale-subnet-router) | Tailscale | Reach devices that can't run Tailscale themselves |
+| 4.1 | [Exit Nodes](#6-optional-tailscale-subnet-router) | Tailscale | Reach devices that can't run Tailscale themselves |
 | 5 | [Verification & Troubleshooting](#7-verification--troubleshooting) | – | Check that everything works |
 | 6 | [Security Checklist](#8-security-checklist) | – | Things to double-check before you're done |
 
